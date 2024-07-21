@@ -24,15 +24,19 @@
         const energyBar = document.getElementById('energy-bar');
         const upgradeButton = document.getElementById('upgrade-button');
         const upgradeLevelSpan = document.getElementById('upgrade-level');
-        
+
         let energy = parseFloat(localStorage.getItem('energy')) || 5000; // Начальная энергия
         let clicks = parseInt(localStorage.getItem('clicks')) || 0; // Начальное количество кликов
         let upgradeLevel = parseInt(localStorage.getItem('upgradeLevel')) || 1; // Начальный уровень прокачки
 
         // Обновление энергии и прогресс-бара
         function updateEnergy() {
+            const lastUpdateTime = parseFloat(localStorage.getItem('lastUpdateTime')) || Date.now();
+            const now = Date.now();
+            const secondsElapsed = (now - lastUpdateTime) / 1000;
+
             if (energy < 5000) {
-                energy += 0.5; // Восстановление энергии
+                energy += 0.5 * secondsElapsed; // Восстановление энергии
                 if (energy > 5000) {
                     energy = 5000; // Ограничение максимальной энергии
                 }
@@ -40,6 +44,8 @@
                 energyBar.textContent = `${Math.floor(energy)}⚡`;
                 energyBar.style.width = `${energy / 5000 * 100}%`;
             }
+
+            localStorage.setItem('lastUpdateTime', now); // Обновляем время последнего обновления
         }
 
         // Обработка клика
@@ -66,6 +72,12 @@
                 setTimeout(() => {
                     container.removeChild(plusOne);
                 }, 1000);
+
+                // Анимация увеличения изображения манула
+                manul.classList.add('clicked');
+                setTimeout(() => {
+                    manul.classList.remove('clicked');
+                }, 100);
             }
         });
 
