@@ -1,103 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"> <!-- Предотвращение масштабирования -->
-    <title>Manul Clicker</title>
+    <title>Кликер Манул</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="container">
         <div id="counter">0</div>
-        <img src="img/manul.jpg" alt="Manul" id="manul">
+        <img src="img/manul.jpg" alt="Манул" id="manul">
         <div id="energy-container">
             <div id="energy-bar">5000⚡</div>
+        </div>
+        <div id="upgrade-container">
+            <div id="upgrade-info">Уровень прокачки: <span id="upgrade-level">1</span></div>
+            <button id="upgrade-button">Прокачать силу клика</button>
         </div>
     </div>
     <script>
         const manul = document.getElementById('manul');
         const counter = document.getElementById('counter');
         const energyBar = document.getElementById('energy-bar');
-        const container = document.getElementById('container');
+        const upgradeButton = document.getElementById('upgrade-button');
+        const upgradeLevelSpan = document.getElementById('upgrade-level');
+        
+        let energy = parseFloat(localStorage.getItem('energy')) || 5000; // Начальная энергия
+        let clicks = parseInt(localStorage.getItem('clicks')) || 0; // Начальное количество кликов
+        let upgradeLevel = parseInt(localStorage.getItem('upgradeLevel')) || 1; // Начальный уровень прокачки
 
-        const maxEnergy = 5000;
-        let energy = maxEnergy;
-        let clicks = 0;
-
-        // Получаем сохраненные данные из localStorage
-        const savedClicks = localStorage.getItem('clicks');
-        const savedEnergy = localStorage.getItem('energy');
-        const lastVisit = localStorage.getItem('lastVisit');
-
-        if (savedClicks !== null) {
-            clicks = parseInt(savedClicks, 10);
-        }
-
-        if (savedEnergy !== null) {
-            energy = parseFloat(savedEnergy);
-        }
-
-        // Обновляем энергию на основе времени последнего посещения
-        if (lastVisit !== null) {
-            const now = Date.now();
-            const lastVisitTime = parseInt(lastVisit, 10);
-            const timeElapsed = (now - lastVisitTime) / 1000; // Время в секундах
-            const recoveredEnergy = Math.min(maxEnergy, energy + timeElapsed * 0.5);
-            energy = recoveredEnergy;
-        }
-
-        // Функция обновления энергии и прогресс-бара
+        // Обновление энергии и прогресс-бара
         function updateEnergy() {
-            if (energy < maxEnergy) {
+            if (energy < 5000) {
                 energy += 0.5; // Восстановление энергии
-                if (energy > maxEnergy) {
-                    energy = maxEnergy; // Ограничение максимальной энергии
+                if (energy > 5000) {
+                    energy = 5000; // Ограничение максимальной энергии
                 }
-                energyBar.textContent = `${Math.floor(energy)}⚡`;
-                energyBar.style.width = `${energy / maxEnergy * 100}%`;
-                // Сохраняем энергию в localStorage
                 localStorage.setItem('energy', energy);
+                energyBar.textContent = `${Math.floor(energy)}⚡`;
+                energyBar.style.width = `${energy / 5000 * 100}%`;
             }
         }
 
-        // Функция обработки клика
+        // Обработка клика
         manul.addEventListener('click', (event) => {
             if (energy > 0) {
-                energy -= 1; // Расход энергии
-                clicks += 1;
-                counter.textContent = clicks;
-                energyBar.textContent = `${Math.floor(energy)}⚡`;
-                energyBar.style.width = `${energy / maxEnergy * 100}%`;
-
-                // Сохраняем количество кликов и энергию в localStorage
+                let clickValue = upgradeLevel; // Количество манулов за клик
+                energy -= clickValue; // Расход энергии
+                clicks += clickValue;
                 localStorage.setItem('clicks', clicks);
                 localStorage.setItem('energy', energy);
+                counter.textContent = clicks;
+                energyBar.textContent = `${Math.floor(energy)}⚡`;
+                energyBar.style.width = `${energy / 5000 * 100}%`;
 
-                // Создаем элемент +1
+                // Создание элемента +X при клике
                 const plusOne = document.createElement('div');
-                plusOne.textContent = '+1';
+                plusOne.textContent = `+${clickValue}`;
                 plusOne.className = 'plus-one';
                 plusOne.style.left = `${event.clientX - container.offsetLeft}px`;
                 plusOne.style.top = `${event.clientY - container.offsetTop}px`;
                 container.appendChild(plusOne);
 
-                // Удаляем элемент +1 после анимации
+                // Удаление элемента +X после анимации
                 setTimeout(() => {
                     container.removeChild(plusOne);
                 }, 1000);
             }
         });
 
+        // Обновление уровня прокачки
+        upgradeButton.addEventListener('click', () => {
+            if (clicks >= 100 * upgradeLevel) {
+                clicks -= 100 * upgradeLevel;
+                upgradeLevel++;
+                localStorage.setItem('clicks', clicks);
+                localStorage.setItem('upgradeLevel', upgradeLevel);
+                upgradeLevelSpan.textContent = upgradeLevel;
+                counter.textContent = clicks;
+                energy = Math.max(0, energy - (upgradeLevel - 1)); // Расход энергии при прокачке
+                localStorage.setItem('energy', energy);
+                energyBar.textContent = `${Math.floor(energy)}⚡`;
+                energyBar.style.width = `${energy / 5000 * 100}%`;
+            }
+        });
+
         // Восстанавливаем энергию каждую секунду
         setInterval(updateEnergy, 1000);
 
-        // Сохраняем текущее время последнего посещения
-        localStorage.setItem('lastVisit', Date.now());
-
-        // Обновляем счетчик и прогресс-бар при загрузке страницы
-        counter.textContent = clicks;
+        // Устанавливаем начальное значение прокачки
+        upgradeLevelSpan.textContent = upgradeLevel;
         energyBar.textContent = `${Math.floor(energy)}⚡`;
-        energyBar.style.width = `${energy / maxEnergy * 100}%`;
+        energyBar.style.width = `${energy / 5000 * 100}%`;
+        counter.textContent = clicks;
     </script>
 </body>
 </html>
