@@ -1,79 +1,107 @@
-/* Подключаем шрифт из Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
-
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #000428, #004e92); /* Космический фон */
-    overflow: hidden; /* Убираем полосы прокрутки */
-    touch-action: manipulation; /* Улучшает взаимодействие на мобильных устройствах */
-}
-
+/* Основной контейнер */
 #container {
     text-align: center;
+    padding: 20px;
     position: relative;
 }
 
+/* Счетчик кликов */
 #counter {
-    font-size: 48px; /* Увеличиваем размер шрифта */
-    font-family: 'Roboto', sans-serif; /* Используем жирный шрифт */
-    color: white; /* Белый цвет для текста счетчика */
-    position: absolute;
-    top: -70px; /* Поднимаем счетчик выше изображения */
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10; /* Убираем перекрытие */
+    font-size: 2em;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #ffffff;
 }
 
-img {
-    cursor: pointer;
+/* Изображение манула */
+#manul {
+    width: 150px;
+    height: auto;
     border-radius: 50%;
-    width: 200px;
-    height: 200px;
+    cursor: pointer;
     transition: transform 0.1s;
-    user-select: none; /* Убираем выделение текста */
-    border: 5px solid black; /* Черная обводка */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Легкая тень для усиления эффекта обводки */
-    touch-action: manipulation; /* Устраняет проблемы с масштабированием */
+    border: 5px solid #000000; /* Черная обводка */
 }
 
-img:active {
-    transform: scale(1.1); /* Уменьшаем эффект увеличения при клике */
+#manul:active {
+    transform: scale(1.1); /* Увеличение при нажатии */
 }
 
-.plus-one {
-    position: absolute;
-    font-size: 24px;
-    font-family: 'Roboto', sans-serif; /* Используем тот же шрифт для +1 */
-    color: white; /* Белый цвет для +1 */
-    animation: fadeOut 1s forwards;
-    pointer-events: none; /* Чтобы клик не мешал */
-}
-
+/* Прогресс-бар */
 #energy-container {
-    position: absolute;
-    bottom: -45px; /* Располагаем прогресс-бар снизу страницы */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%;
-    height: 30px;
-    border-radius: 15px;
-    background-color: rgba(255, 255, 255, 0.3);
-    padding: 5px; /* Дополнительное пространство вокруг прогресс-бара */
+    margin-top: 15px;
 }
 
 #energy-bar {
+    width: 80%;
+    max-width: 300px;
+    height: 15px;
+    background-color: #333;
+    border-radius: 10px;
+    position: relative;
+    margin: 0 auto;
+    border: 2px solid #000000; /* Черная обводка */
+}
+
+#energy-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
     height: 100%;
-    width: 100%;
-    border-radius: 15px;
-    background-color: #4caf50;
+    background: #00ff00; /* Зеленый цвет для заполнения прогресс-бара */
+    border-radius: 10px;
+    transition: width 0.1s;
+}
+
+/* Элемент +X при клике */
+.plus-one {
+    position: absolute;
+    font-size: 1.5em;
+    color: #ffffff;
+    font-weight: bold;
+    pointer-events: none;
+    transition: opacity 1s;
+}
+
+/* Кнопка прокачки */
+#upgrade-container {
+    margin-top: 20px;
+}
+
+#upgrade-info {
+    font-size: 1.2em;
+    color: #ffffff;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+#upgrade-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #ffffff;
+    background-color: #007bff; /* Голубой цвет */
+    border: 2px solid #000000; /* Черная обводка */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#upgrade-button:hover {
+    background-color: #0056b3; /* Темнее синий при наведении */
+}
+
+#upgrade-button:disabled {
+    background-color: #6c757d; /* Серый цвет для отключенной кнопки */
+    cursor: not-allowed;
+}
+
+/* Фон страницы */
+body {
+    background: linear-gradient(135deg, #f5f5b3, #f2e03c); /* Более мягкий желтый градиент */
+    color: #ffffff;
+    font-family: 'Arial Black', sans-serif; /* Жирный шрифт */
+    margin: 0;
+    padding: 0;
     text-align: center;
-    line-height: 30px; /* Выравнивание текста по вертикали */
-    color: white;
-    font-family: 'Roboto', sans-serif; /* Используем жирный шрифт */
-    font-size: 16px;
 }
