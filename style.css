@@ -1,0 +1,79 @@
+/* Подключаем шрифт из Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #000428, #004e92); /* Космический фон */
+    overflow: hidden; /* Убираем полосы прокрутки */
+    touch-action: manipulation; /* Улучшает взаимодействие на мобильных устройствах */
+}
+
+#container {
+    text-align: center;
+    position: relative;
+}
+
+#counter {
+    font-size: 48px; /* Увеличиваем размер шрифта */
+    font-family: 'Roboto', sans-serif; /* Используем жирный шрифт */
+    color: white; /* Белый цвет для текста счетчика */
+    position: absolute;
+    top: -70px; /* Поднимаем счетчик выше изображения */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10; /* Убираем перекрытие */
+}
+
+img {
+    cursor: pointer;
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    transition: transform 0.1s;
+    user-select: none; /* Убираем выделение текста */
+    border: 5px solid black; /* Черная обводка */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Легкая тень для усиления эффекта обводки */
+    touch-action: manipulation; /* Устраняет проблемы с масштабированием */
+}
+
+img:active {
+    transform: scale(1.1); /* Уменьшаем эффект увеличения при клике */
+}
+
+.plus-one {
+    position: absolute;
+    font-size: 24px;
+    font-family: 'Roboto', sans-serif; /* Используем тот же шрифт для +1 */
+    color: white; /* Белый цвет для +1 */
+    animation: fadeOut 1s forwards;
+    pointer-events: none; /* Чтобы клик не мешал */
+}
+
+#energy-container {
+    position: absolute;
+    bottom: -45px; /* Располагаем прогресс-бар снизу страницы */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 30px;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.3);
+    padding: 5px; /* Дополнительное пространство вокруг прогресс-бара */
+}
+
+#energy-bar {
+    height: 100%;
+    width: 100%;
+    border-radius: 15px;
+    background-color: #4caf50;
+    text-align: center;
+    line-height: 30px; /* Выравнивание текста по вертикали */
+    color: white;
+    font-family: 'Roboto', sans-serif; /* Используем жирный шрифт */
+    font-size: 16px;
+}

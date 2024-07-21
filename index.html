@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"> <!-- Предотвращение масштабирования -->
+    <title>Manul Clicker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="container">
+        <div id="counter">0</div>
+        <img src="img/manul.jpg" alt="Manul" id="manul">
+        <div id="energy-container">
+            <div id="energy-bar">5000⚡</div>
+        </div>
+    </div>
+    <script>
+        const manul = document.getElementById('manul');
+        const counter = document.getElementById('counter');
+        const energyBar = document.getElementById('energy-bar');
+        const container = document.getElementById('container');
+
+        const maxEnergy = 5000;
+        let energy = maxEnergy;
+        let clicks = 0;
+
+        // Получаем сохраненные данные из localStorage
+        const savedClicks = localStorage.getItem('clicks');
+        const savedEnergy = localStorage.getItem('energy');
+        const lastVisit = localStorage.getItem('lastVisit');
+
+        if (savedClicks !== null) {
+            clicks = parseInt(savedClicks, 10);
+        }
+
+        if (savedEnergy !== null) {
+            energy = parseFloat(savedEnergy);
+        }
+
+        // Обновляем энергию на основе времени последнего посещения
+        if (lastVisit !== null) {
+            const now = Date.now();
+            const lastVisitTime = parseInt(lastVisit, 10);
+            const timeElapsed = (now - lastVisitTime) / 1000; // Время в секундах
+            const recoveredEnergy = Math.min(maxEnergy, energy + timeElapsed * 0.5);
+            energy = recoveredEnergy;
+        }
+
+        // Функция обновления энергии и прогресс-бара
+        function updateEnergy() {
+            if (energy < maxEnergy) {
+                energy += 0.5; // Восстановление энергии
+                if (energy > maxEnergy) {
+                    energy = maxEnergy; // Ограничение максимальной энергии
+                }
+                energyBar.textContent = `${Math.floor(energy)}⚡`;
+                energyBar.style.width = `${energy / maxEnergy * 100}%`;
+                // Сохраняем энергию в localStorage
+                localStorage.setItem('energy', energy);
+            }
+        }
+
+        // Функция обработки клика
+        manul.addEventListener('click', (event) => {
+            if (energy > 0) {
+                energy -= 1; // Расход энергии
+                clicks += 1;
+                counter.textContent = clicks;
+                energyBar.textContent = `${Math.floor(energy)}⚡`;
+                energyBar.style.width = `${energy / maxEnergy * 100}%`;
+
+                // Сохраняем количество кликов и энергию в localStorage
+                localStorage.setItem('clicks', clicks);
+                localStorage.setItem('energy', energy);
+
+                // Создаем элемент +1
+                const plusOne = document.createElement('div');
+                plusOne.textContent = '+1';
+                plusOne.className = 'plus-one';
+                plusOne.style.left = `${event.clientX - container.offsetLeft}px`;
+                plusOne.style.top = `${event.clientY - container.offsetTop}px`;
+                container.appendChild(plusOne);
+
+                // Удаляем элемент +1 после анимации
+                setTimeout(() => {
+                    container.removeChild(plusOne);
+                }, 1000);
+            }
+        });
+
+        // Восстанавливаем энергию каждую секунду
+        setInterval(updateEnergy, 1000);
+
+        // Сохраняем текущее время последнего посещения
+        localStorage.setItem('lastVisit', Date.now());
+
+        // Обновляем счетчик и прогресс-бар при загрузке страницы
+        counter.textContent = clicks;
+        energyBar.textContent = `${Math.floor(energy)}⚡`;
+        energyBar.style.width = `${energy / maxEnergy * 100}%`;
+    </script>
+</body>
+</html>
