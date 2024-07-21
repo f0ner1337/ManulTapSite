@@ -23,7 +23,7 @@
     border: 5px solid #000000; /* Черная обводка */
 }
 
-#manul:active {
+#manul.clicked {
     transform: scale(1.1); /* Увеличение при нажатии */
 }
 
@@ -35,7 +35,7 @@
 #energy-bar {
     width: 80%;
     max-width: 300px;
-    height: 0px;
+    height: 15px;
     background-color: #333;
     border-radius: 10px;
     position: relative;
