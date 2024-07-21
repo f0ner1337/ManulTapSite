@@ -35,7 +35,7 @@
 #energy-bar {
     width: 80%;
     max-width: 300px;
-    height: 15px;
+    height: 0px;
     background-color: #333;
     border-radius: 10px;
     position: relative;
