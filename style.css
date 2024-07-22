@@ -86,19 +86,14 @@
     transform: scale(1.5);
 }
 
-/* Кнопка прокачки */
-#upgrade-container {
-    margin-top: 20px;
+/* Основной контейнер */
+#container {
+    text-align: center;
+    padding: 20px;
+    position: relative;
 }
 
-#upgrade-info {
-    font-size: 1.5em;
-    color: #ffffff;
-    margin-bottom: 10px;
-    font-weight: bold;
-    text-shadow: 3px 3px 2px #000000; /* Черная обводка для белого текста, более жирная */
-}
-
+/* Прокачка кнопки */
 #upgrade-button {
     padding: 12px 25px;
     font-size: 1.2em;
@@ -121,134 +116,216 @@
     cursor: not-allowed;
 }
 
-/* Информация о уровне */
-#level-info {
-    margin-top: 20px;
-    font-size: 1.5em;
+    /* Информация о уровне */
+    #level-info {
+        margin-top: 20px;
+        font-size: 1.5em;
+        color: #ffffff;
+        text-shadow: 3px 3px 2px #000000; /* Черная обводка для белого текста, более жирная */
+    }
+
+    #level-info div {
+        margin-bottom: 10px;
+    }
+
+    /* Фон страницы */
+    body {
+        background: linear-gradient(135deg, #f5f5b3, #f2e03c); /* Более мягкий желтый градиент */
+        color: #ffffff;
+        font-family: 'Arial Black', sans-serif; /* Жирный шрифт */
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        overflow: hidden; /* Скрыть элементы, выходящие за пределы экрана */
+    }
+
+    /* Анимация фона */
+    @keyframes backgroundAnimation {
+        0% { background-position: 0% 0%; }
+        50% { background-position: 100% 100%; }
+        100% { background-position: 0% 0%; }
+    }
+
+    body {
+        background: linear-gradient(135deg, #f5f5b3, #f2e03c);
+        background-size: 200% 200%;
+        animation: backgroundAnimation 10s ease infinite;
+    }
+
+    /* Псевдоэлементы для частиц */
+    body::before, body::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    body::before {
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 20%, transparent 80%);
+        background-size: 50px 50px;
+        animation: particles1 5s linear infinite;
+    }
+
+    body::after {
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 10%, transparent 60%);
+        background-size: 100px 100px;
+        animation: particles2 10s linear infinite;
+    }
+
+    /* Анимации частиц */
+    @keyframes particles1 {
+        0% { background-position: 0% 0%; }
+        100% { background-position: 100% 100%; }
+    }
+
+    @keyframes particles2 {
+        0% { background-position: 0% 0%; }
+        100% { background-position: 100% 100%; }
+    }
+
+    /* Вкладки */
+    #tabs {
+        margin-bottom: 20px;
+    }
+
+    .tab-button {
+        padding: 10px 20px;
+        font-size: 1.2em;
+        color: #ffffff;
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s, box-shadow 0.3s;
+        text-shadow: 3px 3px 2px #000000; /* Черная обводка для белого текста, более жирная */
+    }
+
+    .tab-button.active {
+        background: linear-gradient(135deg, #0056b3, #003d80);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+/* Стили для вкладок */
+.tab-buttons {
+    margin: 20px auto; /* Отступ сверху для вкладок */
+    text-align: center;
+}
+
+.tab-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1.2em;
     color: #ffffff;
+    background: #007bff; /* Синий фон для вкладок */
+    border: 2px solid #000000; /* Черная обводка */
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s, border-color 0.3s;
+    margin: 0 5px;
+}
+
+.tab-button.active {
+    background: #0056b3; /* Темнее синий для активной вкладки */
+    border-color: #000000; /* Черная обводка для активной вкладки */
+}
+
+.tab-button:hover {
+    background: #0056b3; /* Темнее синий при наведении */
+}
+
+/* Стили для содержимого вкладок */
+.tab-content {
+    display: none; /* Скрываем все вкладки по умолчанию */
+}
+
+.tab-content.active {
+    display: block; /* Показываем активную вкладку */
+}
+/* Стили для отображения цены прокачки */
+#upgrade-cost {
+    font-size: 1.2em;
+    color: #ffffff;
+    margin-top: 10px;
+    font-weight: bold;
     text-shadow: 3px 3px 2px #000000; /* Черная обводка для белого текста, более жирная */
 }
 
-#level-info div {
-    margin-bottom: 10px;
-}
-
-/* Фон страницы */
-body {
-    background: linear-gradient(135deg, #f5f5b3, #f2e03c); /* Более мягкий желтый градиент */
-    color: #ffffff;
-    font-family: 'Arial Black', sans-serif; /* Жирный шрифт */
-    margin: 0;
-    padding: 0;
+/* Стили для карточки Manulization */
+#manulization-card {
+    margin-top: 20px;
+    padding: 15px;
+    border: 2px solid #000000; /* Черная обводка */
+    border-radius: 8px;
+    background-color: #222;
+    display: inline-block;
     text-align: center;
-    overflow: hidden; /* Скрыть элементы, выходящие за пределы экрана */
+    width: 250px;
 }
 
-/* Анимация фона */
-@keyframes backgroundAnimation {
-    0% { background-position: 0% 0%; }
-    50% { background-position: 100% 100%; }
-    100% { background-position: 0% 0%; }
+#manulization-card h2 {
+    margin: 0 0 10px;
+    color: #ffffff;
+    text-shadow: 2px 2px 1px #000000; /* Черная обводка для белого текста */
 }
 
-body {
-    background: linear-gradient(135deg, #f5f5b3, #f2e03c);
-    background-size: 200% 200%;
-    animation: backgroundAnimation 10s ease infinite;
+#manulization-info p {
+    margin: 5px 0;
+    font-size: 1.2em;
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #000000; /* Черная обводка для белого текста */
 }
 
-/* Падающие смайлики */
-@keyframes fallingSmiley {
-    0% { transform: translateY(-100%); }
-    100% { transform: translateY(100%); }
+#manulization-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #ffffff;
+    background: linear-gradient(135deg, #007bff, #0056b3); /* Градиент для кнопки */
+    border: 2px solid #000000; /* Черная обводка */
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s;
+    text-shadow: 1px 1px 1px #000000; /* Черная обводка для белого текста */
 }
 
-.falling-smiley {
-    position: absolute;
-    font-size: 2em;
-    color: #ffcc00;
-    pointer-events: none;
-    animation: fallingSmiley linear infinite;
-    animation-duration: 5s; /* Уменьшена длительность для большей скорости */
-    animation-timing-function: ease-in;
+#manulization-button:hover {
+    background: linear-gradient(135deg, #0056b3, #003d80); /* Темнее синий при наведении */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень при наведении */
 }
 
-/* Позиционирование смайлов */
-.falling-smiley:nth-child(odd) {
-    left: 10%;
-    animation-delay: 0s;
+#manulization-button:disabled {
+    background: #6c757d; /* Серый цвет для отключенной кнопки */
+    cursor: not-allowed;
+}
+.profit-container {
+    background-color: #333; /* Темно-серый цвет фона */
+    border: 1px solid #555; /* Более светлый серый бордер */
+    border-radius: 5px; /* Скругленные углы */
+    padding: 5px 10px; /* Отступы */
+    margin-top: 10px; /* Отступ сверху */
+    text-align: center; /* Центрирование текста */
+    display: inline-block; /* Не растягивается на всю ширину */
 }
 
-.falling-smiley:nth-child(even) {
-    left: 50%;
-    animation-delay: 2s; /* Задержка для разнообразия */
+.profit-label {
+    display: block;
+    font-size: 12px; /* Меньший размер шрифта */
+    color: #bbb; /* Светло-серый цвет текста */
 }
 
-.falling-smiley:nth-child(3n) {
-    left: 80%;
-    animation-delay: 4s; /* Задержка для разнообразия */
-}
-
-/* Позиционирование смайлов для различных экранов */
-@media (min-width: 600px) {
-    .falling-smiley:nth-child(odd) {
-        left: 5%;
-    }
-
-    .falling-smiley:nth-child(even) {
-        left: 45%;
-    }
-
-    .falling-smiley:nth-child(3n) {
-        left: 75%;
-    }
-}
-
-@media (min-width: 1200px) {
-    .falling-smiley:nth-child(odd) {
-        left: 15%;
-    }
-
-    .falling-smiley:nth-child(even) {
-        left: 55%;
-    }
-
-    .falling-smiley:nth-child(3n) {
-        left: 85%;
-    }
-}
-
-/* Псевдоэлементы для частиц */
-body::before, body::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1;
-}
-
-body::before {
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 20%, transparent 80%);
-    background-size: 50px 50px;
-    animation: particles1 5s linear infinite;
-}
-
-body::after {
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 10%, transparent 60%);
-    background-size: 100px 100px;
-    animation: particles2 10s linear infinite;
-}
-
-/* Анимации частиц */
-@keyframes particles1 {
-    0% { background-position: 0% 0%; }
-    100% { background-position: 100% 100%; }
-}
-
-@keyframes particles2 {
-    0% { background-position: 0% 0%; }
-    100% { background-position: 100% 100%; }
+.profit-value {
+    font-size: 16px; /* Размер шрифта для значения */
+    font-weight: bold;
+    color: #fff; /* Белый цвет текста */
 }
