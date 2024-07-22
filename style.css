@@ -7,24 +7,31 @@
 
 /* Счетчик кликов */
 #counter {
-    font-size: 2em;
+    font-size: 2.5em;
     margin-bottom: 10px;
     font-weight: bold;
     color: #ffffff;
+    text-shadow: 3px 3px 2px #000000; /* Черная обводка для белого текста, более жирная */
+    transition: transform 0.2s ease-in-out;
+}
+
+#counter:hover {
+    transform: scale(1.1); /* Увеличение при наведении */
 }
 
 /* Изображение манула */
 #manul {
-    width: 150px;
+    width: 200px;
     height: auto;
     border-radius: 50%;
     cursor: pointer;
-    transition: transform 0.1s;
-    border: 5px solid #000000; /* Черная обводка */
+    transition: transform 0.1s, box-shadow 0.1s;
+    border: 6px solid #000000; /* Черная обводка */
 }
 
 #manul.clicked {
     transform: scale(1.1); /* Увеличение при нажатии */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Тень при нажатии */
 }
 
 /* Прогресс-бар */
@@ -32,36 +39,51 @@
     margin-top: 15px;
 }
 
-#energy-bar {
+#energy-bar-container {
     width: 80%;
     max-width: 300px;
-    height: 15px;
-    background-color: #333;
-    border-radius: 10px;
-    position: relative;
+    height: 30px;
     margin: 0 auto;
-    border: 2px solid #000000; /* Черная обводка */
+    background-color: #333;
+    border-radius: 15px;
+    border: 3px solid #000000; /* Черная обводка */
+    position: relative;
 }
 
-#energy-bar::after {
-    content: '';
+#energy-bar {
+    height: 100%;
+    background: linear-gradient(135deg, #00ff00, #004d00); /* Зеленый градиент для заполнения прогресс-бара */
+    border-radius: 15px;
     position: absolute;
     top: 0;
     left: 0;
-    height: 100%;
-    background: #00ff00; /* Зеленый цвет для заполнения прогресс-бара */
-    border-radius: 10px;
-    transition: width 0.1s;
+    transition: width 0.2s;
+    text-align: center;
+    line-height: 30px; /* Выравнивание текста по центру */
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: 3px 3px 2px #000000; /* Черная обводка для белого текста, более жирная */
 }
 
 /* Элемент +X при клике */
 .plus-one {
     position: absolute;
-    font-size: 1.5em;
+    font-size: 2em;
     color: #ffffff;
     font-weight: bold;
     pointer-events: none;
-    transition: opacity 1s;
+    transition: opacity 1s, transform 0.5s;
+    text-shadow: 3px 3px 2px #000000; /* Черная обводка для белого текста, более жирная */
+}
+
+.plus-one.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.plus-one.hide {
+    opacity: 0;
+    transform: scale(1.5);
 }
 
 /* Кнопка прокачки */
@@ -70,30 +92,45 @@
 }
 
 #upgrade-info {
-    font-size: 1.2em;
+    font-size: 1.5em;
     color: #ffffff;
     margin-bottom: 10px;
     font-weight: bold;
+    text-shadow: 3px 3px 2px #000000; /* Черная обводка для белого текста, более жирная */
 }
 
 #upgrade-button {
-    padding: 10px 20px;
-    font-size: 1em;
+    padding: 12px 25px;
+    font-size: 1.2em;
     color: #ffffff;
-    background-color: #007bff; /* Голубой цвет */
-    border: 2px solid #000000; /* Черная обводка */
-    border-radius: 5px;
+    background: linear-gradient(135deg, #007bff, #0056b3); /* Градиент для кнопки */
+    border: 3px solid #000000; /* Черная обводка */
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background 0.3s, box-shadow 0.3s;
+    text-shadow: 3px 3px 2px #000000; /* Черная обводка для белого текста, более жирная */
 }
 
 #upgrade-button:hover {
-    background-color: #0056b3; /* Темнее синий при наведении */
+    background: linear-gradient(135deg, #0056b3, #003d80); /* Темнее синий при наведении */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень при наведении */
 }
 
 #upgrade-button:disabled {
-    background-color: #6c757d; /* Серый цвет для отключенной кнопки */
+    background: #6c757d; /* Серый цвет для отключенной кнопки */
     cursor: not-allowed;
+}
+
+/* Информация о уровне */
+#level-info {
+    margin-top: 20px;
+    font-size: 1.5em;
+    color: #ffffff;
+    text-shadow: 3px 3px 2px #000000; /* Черная обводка для белого текста, более жирная */
+}
+
+#level-info div {
+    margin-bottom: 10px;
 }
 
 /* Фон страницы */
@@ -104,4 +141,114 @@ body {
     margin: 0;
     padding: 0;
     text-align: center;
+    overflow: hidden; /* Скрыть элементы, выходящие за пределы экрана */
+}
+
+/* Анимация фона */
+@keyframes backgroundAnimation {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+}
+
+body {
+    background: linear-gradient(135deg, #f5f5b3, #f2e03c);
+    background-size: 200% 200%;
+    animation: backgroundAnimation 10s ease infinite;
+}
+
+/* Падающие смайлики */
+@keyframes fallingSmiley {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+}
+
+.falling-smiley {
+    position: absolute;
+    font-size: 2em;
+    color: #ffcc00;
+    pointer-events: none;
+    animation: fallingSmiley linear infinite;
+    animation-duration: 5s; /* Уменьшена длительность для большей скорости */
+    animation-timing-function: ease-in;
+}
+
+/* Позиционирование смайлов */
+.falling-smiley:nth-child(odd) {
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.falling-smiley:nth-child(even) {
+    left: 50%;
+    animation-delay: 2s; /* Задержка для разнообразия */
+}
+
+.falling-smiley:nth-child(3n) {
+    left: 80%;
+    animation-delay: 4s; /* Задержка для разнообразия */
+}
+
+/* Позиционирование смайлов для различных экранов */
+@media (min-width: 600px) {
+    .falling-smiley:nth-child(odd) {
+        left: 5%;
+    }
+
+    .falling-smiley:nth-child(even) {
+        left: 45%;
+    }
+
+    .falling-smiley:nth-child(3n) {
+        left: 75%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .falling-smiley:nth-child(odd) {
+        left: 15%;
+    }
+
+    .falling-smiley:nth-child(even) {
+        left: 55%;
+    }
+
+    .falling-smiley:nth-child(3n) {
+        left: 85%;
+    }
+}
+
+/* Псевдоэлементы для частиц */
+body::before, body::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+body::before {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 20%, transparent 80%);
+    background-size: 50px 50px;
+    animation: particles1 5s linear infinite;
+}
+
+body::after {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 10%, transparent 60%);
+    background-size: 100px 100px;
+    animation: particles2 10s linear infinite;
+}
+
+/* Анимации частиц */
+@keyframes particles1 {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
+}
+
+@keyframes particles2 {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
 }
