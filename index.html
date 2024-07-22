@@ -2,20 +2,26 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"> <!-- Предотвращение масштабирования -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Кликер Манул</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="container">
-        <div id="counter">0</div>
+        <div id="counter">0 ManulCoin</div>
         <img src="img/manul.jpg" alt="Манул" id="manul">
         <div id="energy-container">
-            <div id="energy-bar">5000⚡</div>
+            <div id="energy-bar-container">
+                <div id="energy-bar">5000/5000⚡</div>
+            </div>
         </div>
         <div id="upgrade-container">
-            <div id="upgrade-info">Уровень прокачки: <span id="upgrade-level">1</span></div>
-            <button id="upgrade-button">Прокачать силу клика</button>
+            <div id="upgrade-info">Уровень прокачки📈: <span id="upgrade-level">1</span></div>
+            <button id="upgrade-button">Прокачать силу клика🖱️</button>
+        </div>
+        <div id="level-info">
+            <div>Уровень персонажа🎮: <span id="player-level">1</span></div>
+            <div>Следующий уровень🚀: <span id="next-level-requirement">5000</span> ManulCoin🐾</div>
         </div>
     </div>
     <script>
@@ -24,10 +30,31 @@
         const energyBar = document.getElementById('energy-bar');
         const upgradeButton = document.getElementById('upgrade-button');
         const upgradeLevelSpan = document.getElementById('upgrade-level');
+        const playerLevelSpan = document.getElementById('player-level');
+        const nextLevelRequirementSpan = document.getElementById('next-level-requirement');
 
         let energy = parseFloat(localStorage.getItem('energy')) || 5000; // Начальная энергия
         let clicks = parseInt(localStorage.getItem('clicks')) || 0; // Начальное количество кликов
         let upgradeLevel = parseInt(localStorage.getItem('upgradeLevel')) || 1; // Начальный уровень прокачки
+        let playerLevel = parseInt(localStorage.getItem('playerLevel')) || 1; // Начальный уровень персонажа
+
+        // Уровни и требования
+        const levelRequirements = [
+            { level: 2, clicks: 5000, energy: 7500 },
+            { level: 3, clicks: 10000, energy: 10000 },
+            { level: 4, clicks: 15000, energy: 12500 },
+            { level: 5, clicks: 30000, energy: 25000 },
+            { level: 6, clicks: 50000, energy: 45000 },
+            { level: 7, clicks: 100000, energy: 50000 },
+            { level: 8, clicks: 250000, energy: 50000 },
+            { level: 9, clicks: 500000, energy: 50000 },
+            { level: 10, clicks: 1000000, energy: 50000 }
+        ];
+
+        function getNextLevelRequirement() {
+            const nextLevel = levelRequirements.find(req => req.level === playerLevel + 1);
+            return nextLevel ? nextLevel.clicks : 'MAX';
+        }
 
         // Обновление энергии и прогресс-бара
         function updateEnergy() {
@@ -35,17 +62,22 @@
             const now = Date.now();
             const secondsElapsed = (now - lastUpdateTime) / 1000;
 
-            if (energy < 5000) {
+            if (energy < getMaxEnergy()) {
                 energy += 0.5 * secondsElapsed; // Восстановление энергии
-                if (energy > 5000) {
-                    energy = 5000; // Ограничение максимальной энергии
+                if (energy > getMaxEnergy()) {
+                    energy = getMaxEnergy(); // Ограничение максимальной энергии
                 }
                 localStorage.setItem('energy', energy);
-                energyBar.textContent = `${Math.floor(energy)}⚡`;
-                energyBar.style.width = `${energy / 5000 * 100}%`;
+                energyBar.textContent = `${Math.floor(energy)}/${getMaxEnergy()}⚡`;
+                energyBar.style.width = `${(energy / getMaxEnergy()) * 100}%`;
             }
 
             localStorage.setItem('lastUpdateTime', now); // Обновляем время последнего обновления
+        }
+
+        function getMaxEnergy() {
+            const currentLevel = levelRequirements.find(req => req.level === playerLevel);
+            return currentLevel ? currentLevel.energy : 5000;
         }
 
         // Обработка клика
@@ -57,8 +89,8 @@
                 localStorage.setItem('clicks', clicks);
                 localStorage.setItem('energy', energy);
                 counter.textContent = clicks;
-                energyBar.textContent = `${Math.floor(energy)}⚡`;
-                energyBar.style.width = `${energy / 5000 * 100}%`;
+                energyBar.textContent = `${Math.floor(energy)}/${getMaxEnergy()}⚡`;
+                energyBar.style.width = `${(energy / getMaxEnergy()) * 100}%`;
 
                 // Создание элемента +X при клике
                 const plusOne = document.createElement('div');
@@ -78,6 +110,9 @@
                 setTimeout(() => {
                     manul.classList.remove('clicked');
                 }, 100);
+
+                // Проверка на повышение уровня
+                checkLevelUp();
             }
         });
 
@@ -92,18 +127,34 @@
                 counter.textContent = clicks;
                 energy = Math.max(0, energy - (upgradeLevel - 1)); // Расход энергии при прокачке
                 localStorage.setItem('energy', energy);
-                energyBar.textContent = `${Math.floor(energy)}⚡`;
-                energyBar.style.width = `${energy / 5000 * 100}%`;
+                energyBar.textContent = `${Math.floor(energy)}/${getMaxEnergy()}⚡`;
+                energyBar.style.width = `${(energy / getMaxEnergy()) * 100}%`;
             }
         });
+
+        function checkLevelUp() {
+            const nextLevel = levelRequirements.find(req => req.level === playerLevel + 1);
+            if (nextLevel && clicks >= nextLevel.clicks) {
+                playerLevel = nextLevel.level;
+                energy = nextLevel.energy;
+                localStorage.setItem('playerLevel', playerLevel);
+                localStorage.setItem('energy', energy);
+                energyBar.textContent = `${Math.floor(energy)}/${getMaxEnergy()}⚡`;
+                energyBar.style.width = `${(energy / getMaxEnergy()) * 100}%`;
+                playerLevelSpan.textContent = playerLevel;
+                nextLevelRequirementSpan.textContent = getNextLevelRequirement();
+            }
+        }
 
         // Восстанавливаем энергию каждую секунду
         setInterval(updateEnergy, 1000);
 
-        // Устанавливаем начальное значение прокачки
+        // Устанавливаем начальные значения
         upgradeLevelSpan.textContent = upgradeLevel;
-        energyBar.textContent = `${Math.floor(energy)}⚡`;
-        energyBar.style.width = `${energy / 5000 * 100}%`;
+        playerLevelSpan.textContent = playerLevel;
+        nextLevelRequirementSpan.textContent = getNextLevelRequirement();
+        energyBar.textContent = `${Math.floor(energy)}/${getMaxEnergy()}⚡`;
+        energyBar.style.width = `${(energy / getMaxEnergy()) * 100}%`;
         counter.textContent = clicks;
     </script>
 </body>
