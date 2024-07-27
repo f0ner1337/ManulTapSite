@@ -309,7 +309,7 @@
     cursor: not-allowed;
 }
 .profit-container {
-    background-color: #333; /* Темно-серый цвет фона */
+    background-color: #020202; /* Темно-серый цвет фона */
     border: 1px solid #555; /* Более светлый серый бордер */
     border-radius: 5px; /* Скругленные углы */
     padding: 5px 10px; /* Отступы */
@@ -329,3 +329,25 @@
     font-weight: bold;
     color: #fff; /* Белый цвет текста */
 }
+
+.upgrade-section {
+    margin-top: 20px;
+  }
+  
+  #energy-upgrade-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+  
+  #energy-upgrade-button:disabled {
+    background-color: #1f201f;
+  }
+  
