@@ -330,24 +330,4 @@
     color: #fff; /* Белый цвет текста */
 }
 
-.upgrade-section {
-    margin-top: 20px;
-  }
-  
-  #energy-upgrade-button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-  }
-  
-  #energy-upgrade-button:disabled {
-    background-color: #1f201f;
-  }
-  
+
