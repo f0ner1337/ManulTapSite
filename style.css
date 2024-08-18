@@ -26,8 +26,9 @@
     border-radius: 50%;
     cursor: pointer;
     transition: transform 0.1s, box-shadow 0.1s;
-    border: 6px solid #000000; /* Черная обводка */
+    border: 6px solid #909292; /* Черная обводка */
 }
+
 
 #manul.clicked {
     transform: scale(1.1); /* Увеличение при нажатии */
@@ -44,9 +45,9 @@
     max-width: 300px;
     height: 30px;
     margin: 0 auto;
-    background-color: #333;
+    background-color: #ffffff;
     border-radius: 15px;
-    border: 3px solid #000000; /* Черная обводка */
+    border: 3px solid #ffffff; /* Черная обводка */
     position: relative;
 }
 
@@ -62,18 +63,18 @@
     line-height: 30px; /* Выравнивание текста по центру */
     color: #ffffff;
     font-weight: bold;
-    text-shadow: 3px 3px 2px #000000; /* Черная обводка для белого текста, более жирная */
+    text-shadow: 3px 3px 2px #585858; /* Черная обводка для белого текста, более жирная */
 }
 
 /* Элемент +X при клике */
 .plus-one {
     position: absolute;
     font-size: 2em;
-    color: #ffffff;
+    color:#ca2bc2;
     font-weight: bold;
     pointer-events: none;
     transition: opacity 1s, transform 0.5s;
-    text-shadow: 3px 3px 2px #000000; /* Черная обводка для белого текста, более жирная */
+    text-shadow: 3px 3px 2px #c077c7; /* Черная обводка для белого текста, более жирная */
 }
 
 .plus-one.show {
@@ -128,64 +129,115 @@
         margin-bottom: 10px;
     }
 
-    /* Фон страницы */
-    body {
-        background: linear-gradient(135deg, #f5f5b3, #f2e03c); /* Более мягкий желтый градиент */
-        color: #ffffff;
-        font-family: 'Arial Black', sans-serif; /* Жирный шрифт */
-        margin: 0;
-        padding: 0;
-        text-align: center;
-        overflow: hidden; /* Скрыть элементы, выходящие за пределы экрана */
-    }
+   /* Фон страницы */
+body {
+    background: linear-gradient(135deg, #000000, #1a1a1a); /* Черный градиент для фона */
+    color: #ffffff;
+    font-family: 'Arial Black', sans-serif; /* Жирный шрифт */
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    overflow: hidden; /* Скрыть элементы, выходящие за пределы экрана */
+}
 
-    /* Анимация фона */
-    @keyframes backgroundAnimation {
-        0% { background-position: 0% 0%; }
-        50% { background-position: 100% 100%; }
-        100% { background-position: 0% 0%; }
-    }
 
-    body {
-        background: linear-gradient(135deg, #f5f5b3, #f2e03c);
-        background-size: 200% 200%;
-        animation: backgroundAnimation 10s ease infinite;
-    }
 
-    /* Псевдоэлементы для частиц */
-    body::before, body::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: -1;
-    }
+body {
+    background: linear-gradient(135deg, #000000, #1a1a1a);
+    background-size: 200% 200%;
+    animation: backgroundAnimation 10s ease infinite;
+}
 
-    body::before {
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 20%, transparent 80%);
-        background-size: 50px 50px;
-        animation: particles1 5s linear infinite;
+/* Огоньки */
+@keyframes floating {
+    0% {
+        transform: translateY(0) scale(1); /* Начальный размер огоньков */
+        opacity: 1;
     }
+    100% {
+        transform: translateY(-100vh) scale(2); /* Огни увеличиваются по мере подъема до вершины экрана */
+        opacity: 0;
+    }
+}
 
-    body::after {
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 10%, transparent 60%);
-        background-size: 100px 100px;
-        animation: particles2 10s linear infinite;
-    }
+.firefly {
+    position: absolute;
+    bottom: -20px;
+    width: 5px;
+    height: 5px;
+    background-color: rgba(0, 191, 255, 0.8); /* Голубой цвет огоньков */
+    border-radius: 50%;
+    animation: floating 1.5s linear infinite; /* Ускорение огоньков */
+}
 
-    /* Анимации частиц */
-    @keyframes particles1 {
-        0% { background-position: 0% 0%; }
-        100% { background-position: 100% 100%; }
-    }
+/* Псевдоэлементы для создания нескольких огоньков */
+body::before, body::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    width: 5px;
+    height: 5px;
+    background-color: rgba(0, 191, 255, 0.8); /* Голубой цвет огоньков */
+    border-radius: 50%;
+    animation: floating 1.5s linear infinite;
+    opacity: 0.6;
+}
 
-    @keyframes particles2 {
-        0% { background-position: 0% 0%; }
-        100% { background-position: 100% 100%; }
-    }
+body::before {
+    left: 25%;
+    animation-duration: 1.3s;
+    animation-delay: 0.3s;
+}
+
+body::after {
+    left: 75%;
+    animation-duration: 1.5s;
+    animation-delay: 0.7s;
+}
+
+/* Клонируем огоньки с задержкой */
+.firefly:nth-child(2) {
+    left: 30%;
+    animation-delay: 0.2s;
+}
+
+.firefly:nth-child(3) {
+    left: 50%;
+    animation-delay: 0.4s;
+}
+
+.firefly:nth-child(4) {
+    left: 70%;
+    animation-delay: 0.6s;
+}
+
+.firefly:nth-child(5) {
+    left: 90%;
+    animation-delay: 0.8s;
+}
+
+
+/* Клонируем огоньки с задержкой */
+.firefly:nth-child(2) {
+    left: 30%;
+    animation-delay: 0.4s;
+}
+
+.firefly:nth-child(3) {
+    left: 50%;
+    animation-delay: 0.6s;
+}
+
+.firefly:nth-child(4) {
+    left: 70%;
+    animation-delay: 0.8s;
+}
+
+.firefly:nth-child(5) {
+    left: 90%;
+    animation-delay: 1s;
+}
+
 
     /* Вкладки */
     #tabs {
@@ -327,7 +379,6 @@
 .profit-value {
     font-size: 16px; /* Размер шрифта для значения */
     font-weight: bold;
-    color: #fff; /* Белый цвет текста */
+    color: #82e978; /* Белый цвет текста */
 }
-
 
