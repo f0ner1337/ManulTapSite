@@ -1,4 +1,4 @@
-/* Основной манул */
+/* Основной контейнер */
 #container {
     text-align: center;
     padding: 20px;
@@ -382,3 +382,64 @@ body::after {
     color: #82e978; /* Белый цвет текста */
 }
 
+.plus-one {
+    position: absolute;
+    font-size: 2em;
+    color: #ca2bc2;
+    font-weight: bold;
+    pointer-events: none;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    text-shadow: 3px 3px 2px #c077c7;
+    transform: translateY(0);
+}
+
+.plus-one.show {
+    opacity: 1;
+    transform: translateY(-20px); /* Смещение вверх */
+}
+
+.plus-one.hide {
+    opacity: 0;
+    transform: translateY(-40px); /* Смещение вверх */
+}
+
+/* Основной стиль для изображения */
+#manul {
+    width: 200px;
+    height: auto;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+    position: relative;
+    border: 6px solid #909292; /* Черная обводка */
+    box-shadow: 0 0 10px rgba(128, 128, 128, 0.6); /* Начальная тень */
+    animation: glow 1.5s infinite alternate; /* Постоянная анимация */
+}
+
+/* Анимация переливающейся обводки */
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 10px rgba(128, 128, 128, 0.6); /* Начальный цвет и интенсивность */
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(192, 192, 192, 1); /* Сильная обводка и более светлый цвет */
+    }
+    100% {
+        box-shadow: 0 0 30px rgba(128, 128, 128, 0.6); /* Конечная обводка и интенсивность */
+    }
+}
+
+/* Эффект при нажатии */
+#manul.clicked {
+    transform: scale(1.1); /* Увеличение при нажатии */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Тень при нажатии */
+}
+
+.container {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container:hover {
+    background-color: #333;
+    color: #f1f1f1;
+}
