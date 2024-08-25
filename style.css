@@ -69,13 +69,31 @@
 /* Элемент +X при клике */
 .plus-one {
     position: absolute;
-    font-size: 2em;
-    color:#ca2bc2;
+    font-size: 2.5em; /* Увеличен размер шрифта */
+    color: #ff1493; /* Яркий розовый цвет */
     font-weight: bold;
     pointer-events: none;
-    transition: opacity 1s, transform 0.5s;
-    text-shadow: 3px 3px 2px #c077c7; /* Черная обводка для белого текста, более жирная */
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    text-shadow: 3px 3px 5px #000000; /* Увеличена тень для большего контраста */
+    transform: translateY(0);
+    animation: bounce 0.7s ease-out forwards;
 }
+
+/* Новая анимация для "+X" */
+@keyframes bounce {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-30px); /* Подскок вверх */
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50px); /* Исчезает вверх */
+    }
+}
+
 
 .plus-one.show {
     opacity: 1;
