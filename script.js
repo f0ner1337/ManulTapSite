@@ -1,7 +1,3 @@
-window.addEventListener('beforeunload', () => {
-    // Сохранить текущее время в localStorage перед выходом
-    localStorage.setItem('lastVisit', new Date().getTime());
-});
 document.addEventListener('DOMContentLoaded', () => {
     const manul = document.getElementById('manul');
     const counter = document.getElementById('counter');
@@ -18,10 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabContents = document.querySelectorAll('.tab-content');
     const profitPerHourSpan = document.getElementById('profit-per-hour');
     const container = document.getElementById('container');
-    const hourlyProfitSpan = document.getElementById('hourly-profit-value');
-
-
-    
   
     let energy = parseFloat(localStorage.getItem('energy')) || 5000;
     let clicks = parseInt(localStorage.getItem('clicks')) || 0;
@@ -29,17 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let playerLevel = parseInt(localStorage.getItem('playerLevel')) || 1;
     let manulizationLevel = parseInt(localStorage.getItem('manulizationLevel')) || 1;
   
-    window.addEventListener('beforeunload', () => {
-        localStorage.setItem('lastVisitTime', Date.now());
-    });
-    
-    
-
     const manulizationProfits = [0, 500, 550, 600, 650, 700, 725, 750, 775, 800, 825];
     const manulizationCosts = [1000, 2000, 5000, 7500, 9000, 14000, 20000, 25000, 35000, 50000];
   
-
-
     const levelRequirements = [
         { level: 2, clicks: 5000, energy: 7500 },
         { level: 3, clicks: 10000, energy: 10000 },
@@ -52,8 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
         { level: 10, clicks: 1000000, energy: 50000 }
     ];
   
-
-    
     function getNextLevelRequirement() {
         const nextLevel = levelRequirements.find(req => req.level === playerLevel + 1);
         return nextLevel ? nextLevel.clicks : 'MAX';
@@ -82,10 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function formatNumber(num) {
         return num.toLocaleString();
     }
-
-     window.addEventListener('beforeunload', () => {
-        localStorage.setItem('lastVisitTime', Date.now().toString());
-    });
   
     function updateEnergy() {
         const lastUpdateTime = parseFloat(localStorage.getItem('lastUpdateTime')) || Date.now();
@@ -113,20 +91,6 @@ document.addEventListener('DOMContentLoaded', () => {
         manulizationButton.disabled = clicks < cost;
         updateProfitPerHour();
     }
-    const currentTime = new Date().getTime();
-    const lastVisitTime = parseInt(localStorage.getItem('lastVisit')) || currentTime;
-
-    // Рассчитываем прошедшее время в миллисекундах
-    const timeElapsed = currentTime - lastVisitTime;
-    const hoursElapsed = timeElapsed / (1000 * 60 * 60); // Преобразование миллисекунд в часы
-
-    // Рассчитываем прибыль за прошедшее время
-    const manulizationProfitPerHour = manulizationProfits[manulizationLevel];
-    const offlineProfit = Math.floor(hoursElapsed * manulizationProfitPerHour);
-
-    // Добавляем прибыль за прошедшее время к текущему количеству кликов
-    clicks += offlineProfit;
-    counter.textContent = clicks;
   
     function updateProfitPerHour() {
         const profitPerHour = manulizationProfits.slice(0, manulizationLevel).reduce((a, b) => a + b, 0);
@@ -244,7 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
   
-   
     setInterval(() => {
         updateEnergy();
     }, 1000);
