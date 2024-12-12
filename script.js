@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let upgradeLevel = parseInt(localStorage.getItem('upgradeLevel')) || 1;
     let playerLevel = parseInt(localStorage.getItem('playerLevel')) || 1;
     let manulizationLevel = parseInt(localStorage.getItem('manulizationLevel')) || 1;
+    let critLevel = parseInt(localStorage.getItem('critLevel')) || 0;
   
     const manulizationProfits = [0, 500, 550, 600, 650, 700, 725, 750, 775, 800, 825];
     const manulizationCosts = [1000, 2000, 5000, 7500, 9000, 14000, 20000, 25000, 35000, 50000];
@@ -36,6 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
         { level: 10, clicks: 1000000, energy: 50000 }
     ];
   
+    const critCosts = [200, 1000, 5000];
+    const critChances = [0.2, 0.35, 0.4];
+    const critMultipliers = [2, 2, 3];
+  
     function getNextLevelRequirement() {
         const nextLevel = levelRequirements.find(req => req.level === playerLevel + 1);
         return nextLevel ? nextLevel.clicks : 'MAX';
@@ -47,10 +52,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   
     function getUpgradeCost() {
-        if (upgradeLevel <= 10) return 150;
-        if (upgradeLevel <= 20) return 500;
-        if (upgradeLevel <= 30) return 1000;
-        return 2000;
+        switch(upgradeLevel) {
+            case 1: return 150;  // 1 -> 2
+            case 2: return 500;  // 2 -> 3
+            case 3: return 1000; // 3 -> 4
+            case 4: return 2000; // 4 -> 5
+            default: return Infinity; // После 5 уровня прокачка недоступна
+        }
     }
   
     function getManulizationCost() {
@@ -62,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   
     function formatNumber(num) {
-        return num.toLocaleString();
+        return Math.floor(num).toString();
     }
   
     function updateEnergy() {
@@ -112,39 +120,52 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   
     manul.addEventListener('click', (event) => {
-        if (energy > 0) {
-            let clickValue = upgradeLevel;
-            energy -= clickValue;
+        if (energy >= 1) {
+            let clickValue = Math.max(1, upgradeLevel);
+            const energyCost = Math.min(energy, clickValue);
+            
+            // Проверяем крит
+            if (critLevel > 0 && Math.random() < critChances[critLevel - 1]) {
+                clickValue *= critMultipliers[critLevel - 1];
+                
+                // Анимация крита
+                const critText = document.createElement('div');
+                critText.textContent = `КРИТ! x${critMultipliers[critLevel - 1]}`;
+                critText.className = 'crit-text';
+                critText.style.left = `${event.clientX - container.offsetLeft}px`;
+                critText.style.top = `${event.clientY - container.offsetTop}px`;
+                container.appendChild(critText);
+                
+                setTimeout(() => container.removeChild(critText), 1000);
+            }
+            
+            energy -= energyCost;
             clicks += clickValue;
+            
             localStorage.setItem('clicks', clicks);
             localStorage.setItem('energy', energy);
-            counter.textContent = formatNumber(clicks);
+            
+            counter.textContent = formatNumber(Math.floor(clicks));
             energyBar.textContent = `${Math.floor(energy)}/${getMaxEnergy()}⚡`;
             energyBar.style.width = `${(energy / getMaxEnergy()) * 100}%`;
-  
+            
+            // Анимация +X
             const plusOne = document.createElement('div');
-            plusOne.textContent = `+${clickValue}`;
-            plusOne.className = 'plus-one';
+            plusOne.textContent = `+${formatNumber(clickValue)}`;
+            plusOne.className = clickValue > upgradeLevel ? 'plus-one crit' : 'plus-one';
             plusOne.style.left = `${event.clientX - container.offsetLeft}px`;
             plusOne.style.top = `${event.clientY - container.offsetTop}px`;
             container.appendChild(plusOne);
-  
-            setTimeout(() => {
-                container.removeChild(plusOne);
-            }, 1000);
-  
-            manul.classList.add('clicked');
-            setTimeout(() => {
-                manul.classList.remove('clicked');
-            }, 100);
-  
+            
+            setTimeout(() => container.removeChild(plusOne), 1000);
+            
             checkLevelUp();
         }
     });
   
     upgradeButton.addEventListener('click', () => {
         const upgradeCost = getUpgradeCost();
-        if (clicks >= upgradeCost) {
+        if (clicks >= upgradeCost && upgradeLevel < 5) {
             clicks -= upgradeCost;
             upgradeLevel++;
             localStorage.setItem('clicks', clicks);
@@ -155,12 +176,22 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('energy', energy);
             energyBar.textContent = `${Math.floor(energy)}/${getMaxEnergy()}⚡`;
             energyBar.style.width = `${(energy / getMaxEnergy()) * 100}%`;
+            
+            if (upgradeLevel >= 5) {
+                upgradeButton.disabled = true;
+                upgradeButton.textContent = 'МАКС. УРОВЕНЬ';
+            }
+            
             updateUpgradeCost();
         }
     });
   
     function updateUpgradeCost() {
-        upgradeCostValueSpan.textContent = formatNumber(getUpgradeCost());
+        if (upgradeLevel >= 5) {
+            upgradeCostValueSpan.textContent = 'МАКС';
+        } else {
+            upgradeCostValueSpan.textContent = formatNumber(getUpgradeCost());
+        }
     }
   
     manulizationButton.addEventListener('click', () => {
@@ -222,5 +253,111 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   
     initialize();
-  });
   
+    // Функция для показа уведомления
+    function showNotification(message) {
+        // Проверяем, запущено ли приложение в Telegram WebApp
+        if (window.Telegram && window.Telegram.WebApp) {
+            // Используем нативное уведомление Telegram
+            window.Telegram.WebApp.showPopup({
+                title: 'Офлайн прибыль',
+                message: message,
+                buttons: [{
+                    type: 'ok'
+                }]
+            });
+        } else {
+            // Создаем собственное уведомление для браузера
+            const notification = document.createElement('div');
+            notification.className = 'custom-notification';
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <h3>Офлайн прибыль</h3>
+                    <p>${message}</p>
+                    <button onclick="this.parentElement.parentElement.remove()">OK</button>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            // Автоматически скрываем через 5 секунд
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+    }
+  
+    // Обновляем функцию calculateOfflineProgress
+  
+    const critLevelSpan = document.getElementById('crit-level');
+    const critCostSpan = document.getElementById('crit-cost');
+    const critButton = document.getElementById('crit-button');
+  
+    // Обработчик кнопки прокачки крита
+    if (critButton) {
+        critButton.addEventListener('click', () => {
+            console.log('Кнопка нажата');
+            const cost = critLevel < 3 ? critCosts[critLevel] : Infinity;
+            
+            if (clicks >= cost && critLevel < 3) {
+                clicks -= cost;
+                critLevel++;
+                
+                // Сохраняем прогресс
+                localStorage.setItem('clicks', clicks);
+                localStorage.setItem('critLevel', critLevel);
+                
+                // Обновляем отображение
+                counter.textContent = formatNumber(Math.floor(clicks));
+                
+                // Обновляем информацию о критах
+                critLevelSpan.textContent = critLevel;
+                critCostSpan.textContent = critLevel < 3 ? formatNumber(critCosts[critLevel]) : 'МАКС';
+                
+                console.log('Крит улучшен до уровня:', critLevel);
+            }
+        });
+    }
+  
+    // Функция обновления информации о критах
+    function updateCritInfo() {
+        if (critLevelSpan && critCostSpan) {
+            critLevelSpan.textContent = critLevel;
+            critCostSpan.textContent = critLevel < 3 ? formatNumber(critCosts[critLevel]) : 'МАКС';
+        }
+    }
+  
+    // Вызываем обновление при загрузке
+    updateCritInfo();
+  
+    // Обновляем функцию расчета офлайн прогресса
+    function calculateOfflineProgress() {
+        const lastVisitTime = parseInt(localStorage.getItem('lastVisitTime')) || Date.now();
+        const currentTime = Date.now();
+        const timeDifferenceInSeconds = (currentTime - lastVisitTime) / 1000;
+        
+        if (timeDifferenceInSeconds > 0 && manulizationLevel > 0) {
+            const profitPerHour = manulizationProfits.slice(0, manulizationLevel).reduce((a, b) => a + b, 0);
+            const offlineEarnings = Math.floor((profitPerHour / 3600) * timeDifferenceInSeconds);
+            
+            if (offlineEarnings > 0) {
+                clicks += offlineEarnings;
+                localStorage.setItem('clicks', clicks);
+                counter.textContent = formatNumber(clicks);
+                
+                showNotification(`Пока вас не было, вы заработали ${formatNumber(offlineEarnings)} манулов!`);
+            }
+        }
+        
+        localStorage.setItem('lastVisitTime', Date.now());
+    }
+  
+    // Сохраняем время перед закрытием страницы
+    window.addEventListener('beforeunload', () => {
+        localStorage.setItem('lastVisitTime', Date.now());
+    });
+  
+    // Вызываем расчет офлайн прогресса при загрузке страницы
+    calculateOfflineProgress();
+});
