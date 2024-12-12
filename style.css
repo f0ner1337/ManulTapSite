@@ -112,6 +112,8 @@
     position: relative;
 }
 
+
+
 /* Прокачка кнопки */
 #upgrade-button {
     padding: 12px 25px;
@@ -134,6 +136,7 @@
     background: #6c757d; /* Серый цвет для отключенной кнопки */
     cursor: not-allowed;
 }
+
 
     /* Информация о уровне */
     #level-info {
@@ -297,7 +300,7 @@ body::after {
     padding: 10px 20px;
     font-size: 1.2em;
     color: #ffffff;
-    background: #007bff; /* Синий фон для вкладок */
+    background: #007bff; /* Синий фон для вкла��ок */
     border: 2px solid #000000; /* Черная обводка */
     border-radius: 8px;
     cursor: pointer;
@@ -358,7 +361,8 @@ body::after {
 }
 
 #manulization-button {
-    padding: 10px 20px;
+    margin-top: 20px;
+    padding: 20px 20px;
     font-size: 1em;
     color: #ffffff;
     background: linear-gradient(135deg, #007bff, #0056b3); /* Градиент для кнопки */
@@ -421,7 +425,7 @@ body::after {
     transform: translateY(-40px); /* Смещение вверх */
 }
 
-/* Основной стиль для изображения */
+/* Основной стил�� для изображения */
 #manul {
     width: 200px;
     height: auto;
@@ -460,4 +464,131 @@ body::after {
 .container:hover {
     background-color: #333;
     color: #f1f1f1;
+}
+
+.crit-text {
+    position: absolute;
+    font-size: 2.5em;
+    color: #ff0000;
+    font-weight: bold;
+    pointer-events: none;
+    text-shadow: 0 0 10px #ff0000;
+    animation: critAnimation 1s ease-out forwards;
+}
+
+.plus-one.crit {
+    color: #ff0000;
+    font-size: 3em;
+    text-shadow: 0 0 10px #ff0000;
+}
+
+@keyframes critAnimation {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+#crit-button {
+    background: linear-gradient(135deg, #ff0000, #990000);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#crit-button:hover {
+    background: linear-gradient(135deg, #990000, #660000);
+}
+
+#crit-button:disabled {
+    background: #666666;
+    cursor: not-allowed;
+}
+
+#crit-card {
+    margin: 20px auto; /* Сбрасываем отрицательные отступы */
+    padding: 20px;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    background-color: #222;
+    display: inline-block;
+    text-align: center;
+    width: 250px;
+}
+
+/* Стили для уведомлений */
+.custom-notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    padding: 15px;
+    color: white;
+    text-align: center;
+    animation: slideDown 0.5s ease-out;
+}
+
+.notification-content {
+    max-width: 300px;
+}
+
+.notification-content h3 {
+    margin: 0 0 10px 0;
+    color: #007bff;
+}
+
+.notification-content button {
+    margin-top: 10px;
+    padding: 5px 15px;
+    background: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translate(-50%, -100%);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
+#manul-level-info {
+    position: absolute;
+    top: 460px; /* Позиция под энергией */
+    left: 770px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: left;
+    font-size: 1em;
+    text-shadow: 1px 1px 2px #000000;
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+#manul-level-info:hover {
+    border-color: #ffffff;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
