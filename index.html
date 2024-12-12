@@ -25,6 +25,10 @@
 
         </div>
         <div id="main" class="tab-content active">
+            <div id="manul-level-info">
+                <div>Уровень манула: <span id="player-level">1</span></div>
+                <div>До следующего уровня: <span id="next-level-requirement">5000</span> кликов</div>
+            </div>
             <div id="counter">0</div>
             <img src="img/manul.jpg" alt="Манул" id="manul">
             <div id="energy-container">
@@ -32,26 +36,27 @@
                     <div id="energy-bar">5000/5000⚡</div>
                 </div>
             </div>
-            <div id="level-info">
-                <div>Уровень манула🎮: <span id="player-level">1</span></div>
-                <div>Следующий уровень🚀: <span id="next-level-requirement">5000</span> манулов</div>
-            </div>
+
         </div>
         <div id="upgrade" class="tab-content">
             <div id="upgrade-container">
-                <!-- Внутри #upgrade-container -->
-<div id="manulization-card">
-    <h2>Manulization</h2>
-    <div id="manulization-info">
-        <p>Прибыль в час: <span id="manulization-profit">500</span> манулов</p>
-        <p>Цена: <span id="manulization-cost">1000</span> манулов</p>
-    </div>
-    <button id="manulization-button">Купить🛒/Прокачать💪</button>
-</div>
-
-                <!-- Внутри #upgrade-container -->
-
-
+                <div id="crit-card">
+                    <h2>Критический удар</h2>
+                    <div id="crit-info">
+                        <p>Уровень: <span id="crit-level">0</span></p>
+                        <p>Стоимость: <span id="crit-cost">200</span> манулов</p>
+                    </div>
+                    <button id="crit-button">Улучшить крит⚡</button>
+                </div>
+                
+                <div id="manulization-card">
+                    <h2>Manulization</h2>
+                    <div id="manulization-info">
+                        <p>Прибыль в час: <span id="manulization-profit">500</span> манулов</p>
+                        <p>Цена: <span id="manulization-cost">1000</span> манулов</p>
+                    </div>
+                    <button id="manulization-button">Купить🛒/Прокачать💪</button>
+                </div>
                 <div id="upgrade-info">Уровень прокачки🎚️: <span id="upgrade-level">1</span></div>
                 <button id="upgrade-button">Прокачать силу клика💪📈</button>
             </div>
